@@ -41,6 +41,6 @@
       </li>
     </ul>
     <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
-    <a class="app-header__logo" style="font-size: 24px" href="{{ route('dashboard') }}"> {{ $compony_name }} </a>
+    <a class="app-header__logo" style="font-size: 16px ;font-weight:bold" href="{{ route('dashboard') }}"> {{ $compony_name }} </a>
     <!-- Navbar Right Menu-->
   </header>
