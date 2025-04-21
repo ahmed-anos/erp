@@ -1,0 +1,72 @@
+<?php
+
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportsController;
+use Illuminate\Support\Facades\Route;
+
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+Route::get('/', function () {
+    return view('auth.login');
+});
+
+
+
+Route::name('drivers.')->group(function () {
+    Route::get('drivers' ,[DriverController::class, 'index'])->name('index');
+    Route::get('drivers/create' ,[DriverController::class, 'create'])->name('create');
+    Route::post('drivers/store' ,[DriverController::class, 'store'])->name('store');
+    Route::get('drivers/show' ,[DriverController::class, 'show'])->name('show');
+    Route::get('drivers/update/{id}' ,[DriverController::class, 'update'])->name('update');
+    Route::put('drivers/edit/{id}' ,[DriverController::class, 'edit'])->name('edit');
+    Route::delete('drivers/delete/{id}' ,[DriverController::class, 'destroy'])->name('destroy');
+    Route::get('drivers/excel' ,[DriverController::class, 'export'])->name('export');
+});
+
+Route::name('expense.')->group(function () {
+    Route::get('expense' ,[ExpenseController::class, 'index'])->name('index');
+    Route::get('expenses/create' ,[ExpenseController::class, 'create'])->name('create');
+    Route::post('expenses/store' ,[ExpenseController::class, 'store'])->name('store');
+    Route::get('expenses/show' ,[ExpenseController::class, 'show'])->name('show');
+    Route::get('expenses/date' ,[ExpenseController::class, 'searchDate'])->name('dates');
+    Route::get('expenses/export' ,[ExpenseController::class, 'export'])->name('export');
+});
+
+Route::name('reports.')->group(function(){
+        Route::get('drivers_reports', [ReportsController::class, 'allDrivers'])->name('drivers');
+        Route::get('expenses_reports', [ReportsController::class, 'allExpenses'])->name('expenses');
+        Route::get('daily_expenses_reports', [ReportsController::class, 'dailyExpenses'])->name('daily.expenses');
+});
+// reports.drivers
+
+Route::resource('clients' ,ClientController::class);
+Route::get('details' ,[ClientController::class, 'details'])->name('clients.details');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+require __DIR__.'/auth.php';
