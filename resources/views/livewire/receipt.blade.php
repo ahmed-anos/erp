@@ -1,7 +1,7 @@
 <main class="app-content">
     <div class="app-title" style="direction: ltr">
         <div>
-          <h1><i class="bi bi-ui-checks"></i> ادخال  حركه العملاء </h1>
+          <h1><i class="bi bi-ui-checks"></i> سندات قبض العملاء </h1>
           {{-- <p>Bootstrap default form components</p> --}}
         </div>
         {{-- <ul class="app-breadcrumb breadcrumb" style="direction: rtl; font-size:14px">
@@ -21,9 +21,9 @@
       <div class="row" style="direction: rtl">
         <div class="col-md-12" >
           <div class="tile">
-            <h3 class="tile-title">  حركه عميل </h3>
+            <h3 class="tile-title">   اضافه قبض عميل </h3>
             <div class="tile-body">
-                <form wire:submit.prevent="addTransaction" style="display: flex ;flex-wrap:wrap" enctype="multipart/form-data">
+                <form wire:submit.prevent="addReceipt" style="display: flex ;flex-wrap:wrap" enctype="multipart/form-data">
                     @csrf
                     <div class="btn_containers" style="display: flex ;flex-wrap:wrap ; width:100%">
       
@@ -78,33 +78,27 @@
                     @enderror
                     </div>
                     <div class="mb-3 col-3 mx-3">
-                        <label class="form-label"> مصروفات النساف</label>
-                        <select class="form-control"  wire:model="expense" placeholder=" ادخل رقم العميل">
-                          <option value="ديزل">ديزل</option>
-                          <option value="قطع غيار">قطع غيار</option>
-                          <option value="صيانه">صيانه</option>
-                          <option value="كهرباء">كهرباء </option>
-                          <option value="زيوت">زيوت</option>
-                          <option value="راتب">راتب</option>
-                          <option value="اخري">اخري</option>
-                          <option value="بنشر">بنشر</option>
-                          <option value="تواير">تواير</option>
+                        <label class="form-label">  نوع القبض</label>
+                        <select class="form-control"  wire:model="type" placeholder=" ادخل نوع القبض">
+                            <option value="">من فضلك اختر نوع</option>
+                          <option value="نقدي">قبض نقدي </option>
+                          <option value="بنكي">شيك بنكي </option>
                         </select>
+                        @error('type')
+                        <p style="color: red">من فضلك حدد نوع العمليه</p>
+                      @enderror
                     </div>
-                    <div class="mb-3 col-3 mx-3">
-                      <label class="form-label">  سعر المخالفه</label>
-                      <input class="form-control" type="number" min="0" id="interest_rate" wire:model="expense_price" placeholder=" ادخل  سعر المخالفه">
-                      @error('expense_price')
-                      <p style="color: red">من فضلك ادخل السعر</p>
-                    @enderror
-                    </div>
+                 
                     <div class="mb-3 col-3 mx-3">
                       <label class="form-label">البيان</label>
                       <input class="form-control" id="paid" type="text" wire:model="description" placeholder=" ادخل البيان ">
                     </div>
                     <div class="mb-3 col-3 mx-3">
-                      <label class="form-label">السائق</label>
-                      <input class="form-control" id="remain"  type="text" wire:model="driver" placeholder="ادخل اسم السائق" >
+                      <label class="form-label">السعر </label>
+                      <input class="form-control" id="remain"  type="integer" wire:model="money" placeholder="ادخل اموال القبض" >
+                      @error('money')
+                      <p style="color: red">من فضلك ادخل المبلغ</p>
+                    @enderror
                     </div>
                    
                     <div class="mb-3 col-3 mx-3">

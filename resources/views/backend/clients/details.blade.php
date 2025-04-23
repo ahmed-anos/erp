@@ -49,68 +49,26 @@
                             <table class="table table-hover table-bordered mt-3" id="sampleTable1" >
                                 <thead>
                                     <tr>
-
+                                        <th>كود العميل</th>
                                         <th>المديونيه </th>
                                         <th>القسط الشهري</th>
+                                        <th>عدد اشهر التاخير</th>
                                         <th> اجمالي المتاخر</th>
-                                        <th> الفائده</th>
+                                        <th> رقم القسط الحالي</th>
                                         <th>القسط الحالي </th>
-                                        <th>حذف </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td>{{ $client->code }}</td>
                                         <td>{{ $client->indebtedness }}</td>
                                         <td>{{ $client->installment }}</td>
-                                        <td>{{ $client->delayed_months }}</td>
-                                        <td>{{ $client->interest }}</td>
+                                        <td>{{ $client->delay_months }}</td>
+                                        <td>{{ $client->delayed_amount }}</td>
+                                        <td>{{ $currentInstallmentNumber }}</td> 
+                                        {{-- <td>{{ $client->interest }}</td> --}}
                                         <td class="text-center"><a href="{{ route('clients.edit' ,$client->id) }}"
                                                 class="btn btn-primary">تغير حاله القسط</a></td>
-                                        <td class="text-center">
-
-                                            <form id="delete-form-{{ $client->id }}"
-                                                action="{{ route('clients.destroy' ,$client->id) }}"
-                                                method="POST">
-                                                @method('DELETE')
-                                                @csrf
-
-                                                <!-- Button trigger modal -->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                    data-target="#deleteModal-{{ $client->id }}">
-                                                    حذف
-                                                </button>
-
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="deleteModal-{{ $client->id }}" tabindex="-1"
-                                                    role="dialog" aria-labelledby="deleteModalLabel-{{ $client->id }}"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title"
-                                                                    id="deleteModalLabel-{{ $client->id }}">تأكيد الحذف
-                                                                </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                هل أنت متأكد أنك تريد حذف هذا العميل؟
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">إلغاء</button>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    onclick="document.getElementById('delete-form-{{ $client->id }}').submit();">
-                                                                    تأكيد الحذف
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </td>
 
                                     </tr>
 
@@ -125,67 +83,32 @@
                                     <thead>
                                         <tr>
                                             <th>الرقم</th>
+                                            <th>كود العميل</th>
                                             <th>المديونيه </th>
                                             <th>المدفوع</th>
                                             <th>المتبقي</th>
-                                            <th> الفائده</th>
-                                            <th> اشهر التاخير </th>
-                                            <th>اجمالي اشهر التاخير </th>
+                                           
                                             <th>حاله الدفع</th>
                                             <th> التاريخ</th>
                                             <th> الشخص المسؤل</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- <tr>
-                                            <td>{{ $client->indebtedness }}</td>
-                                            <td>{{ $client->installment }}</td>
-                                            <td>{{ $client->delayed_months }}</td>
-                                            <td>{{ $client->interest }}</td>
-                                            <td>{{ $client->interest }}</td>
-                                            <td>{{ $client->interest }}</td>
-                                            <td>{{ $client->interest }}</td>
-                                            <td>{{ $client->interest }}</td>
-                                            <td>{{ $client->interest }}</td>
-                                        </tr> --}}
-    
-                                        <tr>
-                                            <td>1</td>
-                                            <td>6000</td>
-                                            <td>2000</td>
-                                            <td>4000</td>
-                                            <td>12</td>
-                                            <td>3</td>
-                                            <td>1300</td>
-                                            <td style="color: green">مدفوع</td>
-                                            <td>{{ date("Y-m-d") }}</td>
-                                            <td>احمد</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>6000</td>
-                                            <td>2000</td>
-                                            <td>2000</td>
-                                            <td>12</td>
-                                            <td>3</td>
-                                            <td>1300</td>
-                                            <td style="color: red">تاخير</td>
-                                            <td>{{ date("Y-m-d") }}</td>
-                                            <td>علي</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>6000</td>
-                                            <td>2000</td>
-                                            <td>500</td>
-                                            <td>12</td>
-                                            <td>3</td>
-                                            <td>1300</td>
-                                            <td style="color: green">مدفوع</td>
-                                            <td>{{ date("Y-m-d") }}</td>
-                                            <td>احمد</td>
-                                        </tr>
-    
+                                   @foreach ($installment_status as $installment)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $client->code }}</td>
+                                        <td>{{ $client->indebtedness }}</td>
+                                        <td>{{ $client->paid }}</td>
+                                        <td>{{ $client->delayed_amount }}</td>
+                                        
+                                        <td style="color: {{  $installment->status=='paid' ?'green' :'red' }}">{{ $installment->status=='paid' ?'مدفوع' : 'متاخر' }}</td>
+                                        <td>{{ $installment->created_at }}</td>
+                                        <td>{{ $installment->responsible_person }}</td>
+                                    </tr>
+                                   @endforeach
+                                      
+                                    
                                     </tbody>
                                 </table>
                             </div>

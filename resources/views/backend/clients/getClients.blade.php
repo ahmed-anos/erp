@@ -30,27 +30,10 @@
         <div class="tile-body">
           <div class="table-responsive mt-4" style="overflow: hidden">
             <table class="table table-hover table-bordered" id="sampleTable">
-              {{-- @if (count($clients) >0)
-              <div class='optional-btns' style="display:flex; margin-bottom:30px; width:100% ; justify-content:end">
-                    <a class="btn btn-primary" style="background: #343a40 ;border-color:#343a40" href="javascript:window.print();"><i class="bi bi-printer me-2"></i> طباعه</a>
-                <a href="{{ route('drivers.export') }}" style="background: #ffc107 ;color:#fff ;margin:0 10px" class="btn ">ترحيل الاكسيل </a>
-              </div>
-              @endif --}}
-              {{-- @if (count($clients) >0)
-              <form action="{{ route('clients.show', ':id') }}" style="margin: 10px 0" method="get">
-                <div style="display: flex ;margin:10px 0">
-                  <label for="" >البحث عن عميل:</label>
-                  <select name="id" id=""  class="form-control" style="width:350px">
-                    @foreach ($clients as $client)
-                        <option value="{{ $client->id }}">{{ $client->name }}</option>
-                        @endforeach
-                      </select>
-                      <button type="submit" style="background: #00695C ;color:#fff ;margin:0 10px" class="btn ">بحث</button>
-                  </div>
-                </form>
-                @endif --}}
+              
               <thead>
                 <tr>
+                  <th>الكود</th>
                   <th>الاسم</th>
                   <th>خط العمل</th>
                   <th>بدايه القسط</th>
@@ -63,7 +46,7 @@
                   <th>عدد اشهر القسط </th>
                   <th>عدد الاشهر التاخير</th>
                   <th> اجمالي المتاخر </th>
-                  <th>الفائده </th>
+                  {{-- <th>الفائده </th> --}}
                   {{-- <th>القسط الحالي  </th>
                   <th>جميع الاقساط </th>
                   <th>حذف </th> --}}
@@ -71,8 +54,12 @@
               </thead>
               <tbody>
                 <?php $i=0 ?>
+           
                 @foreach ($clients as $client)
+
+            
                 <tr onclick="window.location.href='{{ route('clients.details' ,$client->id) }}';">
+                  <td>{{ $client->code }}</td>
                   <td>{{ $client->name }}</td>
                   <td>{{ $client->country }}</td>
                   <td>{{ $client->start_installment }}</td>
@@ -83,9 +70,9 @@
                   <td>{{ $client->paid }}</td>
                   <td>{{ $client->remaining }}</td>
                   <td>{{ $client->installments_count }}</td>
-                  <td> {{ $client->delayed_months }}</td>
-                  <td>{{ $client->delayed_months * $client->installment }}</td>
-                  <td>{{ $client->interest }}</td>
+                  <td>{{ $client->delay_months }}</td>
+                  <td>{{ $client->delayed_amount }}</td>
+                  {{-- <td>{{ $client->interest }}</td> --}}
                   {{-- <td class="text-center"><a href="{{ route('clients.edit' , $client->id) }}" class="btn " style="background: #20c997">تعديل  </a></td>
                   <td class="text-center"><a href="{{ route('clients.details' ,$client->id) }}" class="btn" style="background: #6c757d">عرض </a></td>
                   <td class="text-center">

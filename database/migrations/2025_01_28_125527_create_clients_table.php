@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
             $table->string('name');
             $table->string('country');
             $table->string('car')->unique();
@@ -21,12 +22,18 @@ return new class extends Migration
             $table->date('current_installment')->nullable();
             $table->date('end_installment');
             $table->integer('installments_count');
-            $table->decimal('indebtedness', 10 ,2);
+            $table->decimal('indebtedness', 10 ,2)->nullable();
             $table->decimal('paid', 10 ,2)->default(0);
             $table->decimal('remaining', 10 ,2)->default(0);
             $table->decimal('interest' ,8,2 )->nullable();
             $table->string('installment_status')->nullable();
             $table->integer('delayed_months')->nullable()->default(0);
+            // Guarantor
+            $table->string('guarantor_name')->nullable();
+            $table->string('guarantor_phone')->nullable();
+
+            //Asset 
+       
             
             $table->softDeletes();
             $table->timestamps();

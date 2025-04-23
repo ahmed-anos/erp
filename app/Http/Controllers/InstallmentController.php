@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Installment;
+use App\Models\InstallmentStatus;
 use Illuminate\Http\Request;
 
 class InstallmentController extends Controller
@@ -28,9 +29,19 @@ class InstallmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'date'=>'required',
+        ]);
+        $status = $request->action === 'paid' ? 1 : 2;
 
-        return 'will store installment';
+        InstallmentStatus::create([
+            'client_id' => $request->client_id,
+            'status' => $status,
+            'date' => $request->date,
+            'responsible_person' => auth()->user()->name,
+        ]);
+    
+        return redirect()->back()->with('success', 'تم حفظ الحالة بنجاح');
     }
 
     /**

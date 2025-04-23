@@ -95,9 +95,6 @@
     </main>
 @endsection
 
-<!-- تأكد من تضمين jQuery -->
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         let expense = document.getElementById('expense');
@@ -105,7 +102,6 @@
         let table = document.getElementById('container');
         let attachment_container = document.getElementById('attachment_container');
 
-        // Toggle بين المصاريف والمرفقات
         attachment.addEventListener('click', function () {
             attachment.classList.add('active');
             expense.classList.remove('active');

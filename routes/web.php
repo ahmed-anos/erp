@@ -15,6 +15,7 @@ use App\Http\Controllers\UserDriverController;
 use App\Livewire\AccountTree;
 use App\Livewire\Client\ClientAccount;
 use App\Livewire\Client\ClientTransactions;
+use App\Livewire\Receipt;
 use App\Models\Expense;
 use App\Models\User;
 use Illuminate\Http\Client\Request;
@@ -89,6 +90,7 @@ Route::name('reports.')->group(function(){
 // Client
 Route::resource('clients' ,ClientController::class);
 Route::get('clientTransaction', ClientTransactions::class)->name('client.transaction');
+Route::get('clientReceipt', Receipt::class)->name('client.receipt');
 Route::get('clientAccount', ClientAccount::class)->name('client.account');
 
 

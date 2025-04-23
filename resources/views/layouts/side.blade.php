@@ -214,6 +214,7 @@
       <ul class="treeview-menu" >
         <li style="direction: rtl"><a class="treeview-item" href="{{ route('clients.create') }}" target="_self" rel="noopener"><i class="icon bi bi-circle-fill"></i> ادخال عميل</a></li>
         <li style="direction: rtl"><a class="treeview-item" href="{{ route('clients.index') }}" target="_self" rel="noopener"><i class="icon bi bi-circle-fill"></i> استعلام العملاء</a></li>
+        <li style="direction: rtl"><a class="treeview-item" href="{{ route('client.account') }}" target="_self" rel="noopener"><i class="icon bi bi-circle-fill"></i> كشف حساب العملاء</a></li>
 
       </ul>
     </li>
@@ -232,8 +233,8 @@
          </a>
         
       <ul class="treeview-menu" >
-         <li style="direction: rtl"><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i>  سند قبض نقدي  </a></li>
-         <li style="direction: rtl"><a class="treeview-item" href=""><i class="icon bi bi-circle-fill"></i>   سند صرف نقدي </a></li>
+         <li style="direction: rtl"><a class="treeview-item" href="{{ route('client.receipt') }}"><i class="icon bi bi-circle-fill"></i>  سند قبض   </a></li>
+         <li style="direction: rtl"><a class="treeview-item" href=""><i class="icon bi bi-circle-fill"></i>   سند صرف  </a></li>
          <li style="direction: rtl"><a class="treeview-item" href=""><i class="icon bi bi-circle-fill"></i>   اوراق القبض   </a></li>
          <li style="direction: rtl"><a class="treeview-item" href=""><i class="icon bi bi-circle-fill"></i>    ارسال الي البنك    </a></li>
          <li style="direction: rtl"><a class="treeview-item" href=""><i class="icon bi bi-circle-fill"></i>    مرتد من البنك   </a></li>

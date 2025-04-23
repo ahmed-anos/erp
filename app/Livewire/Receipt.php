@@ -1,28 +1,23 @@
 <?php
 
-namespace App\Livewire\Client;
+namespace App\Livewire;
 
 use App\Models\Client;
-use App\Models\ClientMovement;
-use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Context;
+use App\Models\ClientReceipt;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class ClientTransactions extends Component
+class Receipt extends Component
 {
+
     use WithFileUploads;
     // public $code;
     public $document_number;
     public $date;
-    public $client;
     public $money;
-    public $total;
-    public $expense_total;
-    public $expense;
-    public $expense_price;
+ 
     public $description;
-    public $driver;
+    public $type;
     public $images;
 
 
@@ -60,12 +55,9 @@ public function selectClient($selectedCode)
         'code' => 'required|string',
         'document_number' => 'required|string|unique:client_movements',
         'date' => 'required|date',
-        // 'client' => 'required|string',
-        // 'money' => 'required|numeric',
-        'expense' => 'required|string',
-        'expense_price' => 'required|numeric',
+        'type' => 'required|string',
+        'money' => 'required|numeric',
         'description' => 'nullable|string',
-        'driver' => 'nullable|string',
         'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
     ];
 
@@ -74,7 +66,7 @@ public function selectClient($selectedCode)
    
 
   
-    public function addTransaction(){
+    public function addReceipt(){
          $this->validate();
          $imagePaths = [];
     if ($this->images) {
@@ -85,30 +77,41 @@ public function selectClient($selectedCode)
     }
 
     $client_id = Client::where('code', $this->code)->first();
-    ClientMovement::create([
+    $client=ClientReceipt::create([
         'client_id'=>$client_id->id,
         'document_number' => $this->document_number,
         'date' => $this->date,
-        'expense' => $this->expense,
-        'expense_price' => $this->expense_price,
+        'type' => $this->type,
         'description' => $this->description,
-        'driver' => $this->driver,
+        'money' => $this->money,
         'images' => !empty($imagePaths) ? json_encode($imagePaths) : null,
     ]);
+  
+    $lastPaymentDate = $client_id->last_payment_date; // يمكنك تخزين تاريخ آخر دفعة في جدول العميل
+    $currentDate = now();
+    $delayMonths = $lastPaymentDate ? $currentDate->diffInMonths($lastPaymentDate) : 0;
+
+    // حساب إجمالي التأخير
+    $totalDelay = $delayMonths * $this->money; // فرضًا أن المبلغ المتأخر هو المبلغ المدفوع في السند
+
+    $client_id->paid += $this->money;
+    $client_id->remaining -= $this->money; 
+    $client_id->delayed_months = $delayMonths;
+
+    // $client_id->last_payment_date = $this->date; 
+    $client_id->save();
 
     $this->code='';
     $this->document_number='';
     $this->date='';
-    $this->expense='';
-    $this->expense_price='';
+    $this->money='';
     $this->description='';
-    $this->driver='';
     $this->images='';
 
-    flash()->success( 'تم إضافة الحركة بنجاح!');
+    flash()->success( 'تم إضافة القبض بنجاح!');
     }
     public function render()
     {
-        return view('livewire.client.client-transactions')->extends('master');
+        return view('livewire.receipt')->extends('master');
     }
 }

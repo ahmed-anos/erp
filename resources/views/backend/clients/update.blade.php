@@ -15,15 +15,12 @@
   <div class="app-title" style="direction: ltr">
     <div>
       <h1><i class="bi bi-ui-checks"></i> استعلام العملاء</h1>
-      {{-- <p>Bootstrap default form components</p> --}}
     </div>
     <ul class="app-breadcrumb breadcrumb" style="direction: rtl; font-size:14px">
       <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
       @foreach (Context::get('breadcrumbs') as $breadcrumb)
         <li class="breadcrumb-item">
           @if (request()->url() == $breadcrumb['url'])
-          {{-- {{ $breadcrumb['url'] }} --}}
-            <!-- العنصر النشط -->
             <span class="active">{{ $breadcrumb['label'] }}</span>
           @else
             <a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
@@ -41,14 +38,15 @@
          
               <thead>
                 <tr>
+                  <th>كود العميل</th>
                   <th>الاسم</th>
                  <th>القسط</th>
                   <th>عدد الاشهر التاخير</th>
                   <th> اجمالي المتاخر </th>
-                  <th>الفائده </th>
                   <th>القسط الحالي</th>
                   <th>ميعاد السداد</th>
-                  <th>حاله القسط   </th>
+                   
+                  {{-- <th>حاله القسط   </th> --}}
                   <th>سداد/الغاء</th>
                 </tr>
               </thead>
@@ -58,33 +56,33 @@
                 <tr class="my_row flex column">
                   <form action="{{ route('installments.store') }}" method="POST">
                     @csrf
-                   <td><input type="text" name="name" class="installment" readonly value="{{ $client->name }}" style="border:none !important ; outline:none ;width:50%"></td>
-                   <td><input type="text" name="installment" class="installment" readonly value="{{ $client->installment }}" style="border:none !important ; outline:none ;width:50%"></td>
-                   <td><input type="text" name="delayed_months" class="installment" readonly value="{{ $client->delayed_months }}" style="border:none !important ; outline:none ;width:50%"></td>
-                   <td><input type="text" name="totalDelayed" class="installment" readonly value="{{ $client->delayed_months * $client->installment }}" style="border:none !important ; outline:none ;width:50%"></td>
-                   <td><input type="text" name="interest" class="installment" readonly value="{{ $client->interest }}" style="border:none !important ; outline:none ;width:50%"></td>
-                  <td>رقم القسط الحالي</td>
-                  <td>تاريخ التسديد</td>
-                   <td>
-                   
-                        <select name="status" id="status" class="form-control">
-                            {{-- <option value="" readonly>اختر العمليه</option> --}}
-                            <option value="1" name="paid" id="paid">دفع</option>
-                            <option value="2" name="delay" id="delay">تاخير</option>
+                    <input type="hidden" name="client_id" value="{{ $client->id }}">
+                    <td>{{ $client->code }}</td>
+                    <td>{{ $client->name }}</td>
+                    <td>{{ $client->installment }}</td>
+                    <td>{{ $client->delay_months }}</td>
+                    <td>{{ $client->delayed_amount }}</td>
+                    <td>{{ $currentInstallmentNumber }}</td> 
+                    <td><input type="date" name="date" >
+                      @error('date')
+                    <span class="text-danger d-block">من فضلك ادخل تاريخ الدفع</span>
+                      
+                    @enderror
+                    </td>
+                  
+                        <select name="status" id="status" class="form-control d-none"> {{-- نخليه مخفي لأننا هنحدد القيم بزرار --}}
+                            <option value="1">دفع</option>
+                            <option value="2">تأخير</option>
                         </select>
-                        
-                        
-                      </td>
-                      <td><button type="submit" class="form-control" style="background-color: #6610f2; color:#fff">حفظ </button></td>
-                    </form>
-                  {{--<td>اجمالي المتبقي</td>
-                  <td>الفائده</td> --}}
-                  {{-- <td class="text-center"><a href="{{ route('clients.update') }}" class="btn " style="background: #20c997">تعديل  </a></td> --}}
-                  {{-- <td class="text-center"><a href="{{ route('clients.details', ['id'=>$client->id]) }}" class="btn" style="background: #6c757d">تفاصيل </a></td> --}}
+                    <td class="d-flex">
+                        <button type="submit" name="action" value="paid" class="form-control bg-success" style=" color:#fff">حفظ</button>
+                        <button type="submit" name="action" value="delay" class="form-control bg-danger" style=" color:#fff">تراجع</button>
+                    </td>
+                </form>
+                
 
                   
                 </tr>
-                {{-- @endforeach --}}
                 
               </tbody>
             </table>
